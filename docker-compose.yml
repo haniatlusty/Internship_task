@@ -1,0 +1,19 @@
+version: '3'
+services:
+  minio:
+    extends:
+      file: ./01-docker-compose/docker-compose.yml
+      service: minio
+
+  server:
+    environment:
+      MINIO_HOSTNAME: 'minio:9000'
+      MINIO_ACCESS_KEY: 'admin'
+      MINIO_SECRET_KEY: 'password'
+    volumes:
+      - ./app.py:/app/app.py
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
